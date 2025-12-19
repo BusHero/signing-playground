@@ -18,6 +18,6 @@ jobs:
       - name: 'Run: Compile'
         run: ./build.cmd Compile
       - name: sign assembly
-        run: ./sing.ps1
+        run: ./sign.ps1
       - name: 'Run tests'
         run: Invoke-Pester
