@@ -108,6 +108,11 @@
             "Debug",
             "Release"
           ]
+        },
+        "Password": {
+          "type": "string",
+          "description": "Password used to protect the pfx file",
+          "default": "Secrets must be entered via 'nuke :secrets [profile]'"
         }
       }
     },

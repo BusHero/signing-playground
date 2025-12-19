@@ -1,7 +1,5 @@
 using Nuke.Common;
 using Nuke.Common.Tools.DotNet;
-using Nuke.Common.Tools.PowerShell;
-using Nuke.Common.Tools.Pwsh;
 using Nuke.Common.Tools.SignTool;
 
 class Build : NukeBuild
@@ -10,6 +8,10 @@ class Build : NukeBuild
 
     [Parameter("Configuration to build - Default is 'Debug' (local) or 'Release' (server)")]
     readonly Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
+
+    [Secret] 
+    [Parameter("Password used to protect the pfx file")] 
+    readonly string Password;
 
     Target Clean => _ => _
         .Before(Restore)
@@ -35,12 +37,13 @@ class Build : NukeBuild
         });
 
     Target Sign => _ => _
+        .Requires(() => Password)
         .Executes(() =>
         {
             SignToolTasks.SignTool(_ => _
                 .SetFileDigestAlgorithm("SHA256")
                 .SetFile("cert.pfx")
-                .SetPassword("1234")
+                .SetPassword(Password)
                 .AddFiles(".\\Sample\\bin\\Release\\net10.0\\Sample.dll")
             );
 
