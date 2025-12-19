@@ -2,6 +2,7 @@ using Nuke.Common;
 using Nuke.Common.Tools.DotNet;
 using Nuke.Common.Tools.PowerShell;
 using Nuke.Common.Tools.Pwsh;
+using Nuke.Common.Tools.SignTool;
 
 class Build : NukeBuild
 {
@@ -36,8 +37,15 @@ class Build : NukeBuild
     Target Sign => _ => _
         .Executes(() =>
         {
-            PwshTasks.Pwsh(_ => _
-                .EnableNoProfile()
-                .SetCommand("./sign.ps1"));
+            SignToolTasks.SignTool(_ => _
+                .SetFileDigestAlgorithm("SHA256")
+                .SetFile("cert.pfx")
+                .SetPassword("1234")
+                .AddFiles(".\\Sample\\bin\\Release\\net10.0\\Sample.dll")
+            );
+
+            // PwshTasks.Pwsh(_ => _
+            //     .EnableNoProfile()
+            //     .SetCommand("./sign.ps1"));
         });
 }
