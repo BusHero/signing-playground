@@ -20,6 +20,7 @@ jobs:
         run: |
           echo "${{ secrets.CERTIFICATE_BASE64 }}" | base64 --decode > cert.pfx
       - name: 'Run: Compile'
-        run: ./build.cmd Compile --configuration Release --password ${{ secrets.CERTIFICATE_PASSWORD }}
+        run: |
+          ./build.cmd Compile --configuration Release --password ${{ secrets.CERTIFICATE_PASSWORD }} --certificate .\cert.pfx
       - name: 'Run tests'
         run: Invoke-Pester

@@ -12,6 +12,9 @@ class Build : NukeBuild
     [Secret] 
     [Parameter("Password used to protect the pfx file")] 
     readonly string Password;
+    
+    [Parameter("Password used to protect the pfx file")] 
+    readonly string Certificate;
 
     Target Clean => _ => _
         .Before(Restore)
@@ -38,17 +41,14 @@ class Build : NukeBuild
 
     Target Sign => _ => _
         .Requires(() => Password)
+        .Requires(() => Certificate)
         .Executes(() =>
         {
             SignToolTasks.SignTool(_ => _
                 .SetFileDigestAlgorithm("SHA256")
-                .SetFile("cert.pfx")
+                .SetFile(Certificate)
                 .SetPassword(Password)
                 .AddFiles(".\\Sample\\bin\\Release\\net10.0\\Sample.dll")
             );
-
-            // PwshTasks.Pwsh(_ => _
-            //     .EnableNoProfile()
-            //     .SetCommand("./sign.ps1"));
         });
 }
