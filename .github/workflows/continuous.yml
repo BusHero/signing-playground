@@ -16,6 +16,6 @@ jobs:
             ~/.nuget/packages
           key: ${{ runner.os }}-${{ hashFiles('**/global.json', '**/*.csproj', '**/Directory.Packages.props') }}
       - name: 'Run: Compile'
-        run: ./build.cmd Compile --configuration Release --password 1234
+        run: ./build.cmd Compile --configuration Release --password ${{ secrets.CERTIFICATE_PASSWORD }}
       - name: 'Run tests'
         run: Invoke-Pester
