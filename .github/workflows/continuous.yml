@@ -16,7 +16,11 @@ jobs:
             ~/.nuget/packages
           key: ${{ runner.os }}-${{ hashFiles('**/global.json', '**/*.csproj', '**/Directory.Packages.props') }}
       - name: decode certificate
-        run: ConvertFrom-Base64 -Base64Text "${{ secrets.CERTIFICATE_PASSWORD }}" -OutputPath cert.pfx
+        shell: bash
+        run: |
+          echo $CERTIFICATE_BASE64 | base64 --decode > cert.pfx
+        env:
+          CERTIFICATE_BASE64: ${{ secrets.CERTIFICATE_BASE64 }}
       - name: 'Run: Compile'
         run: ./build.cmd Compile --configuration Release --password ${{ secrets.CERTIFICATE_PASSWORD }}
       - name: 'Run tests'
