@@ -18,9 +18,7 @@ jobs:
       - name: decode certificate
         shell: bash
         run: |
-          echo $CERTIFICATE_BASE64 | base64 --decode > cert.pfx
-        env:
-          CERTIFICATE_BASE64: ${{ secrets.CERTIFICATE_BASE64 }}
+          echo "${{ secrets.CERTIFICATE_BASE64 }}" | base64 --decode > cert.pfx
       - name: 'Run: Compile'
         run: ./build.cmd Compile --configuration Release --password ${{ secrets.CERTIFICATE_PASSWORD }}
       - name: 'Run tests'
