@@ -17,7 +17,5 @@ jobs:
           key: ${{ runner.os }}-${{ hashFiles('**/global.json', '**/*.csproj', '**/Directory.Packages.props') }}
       - name: 'Run: Compile'
         run: ./build.cmd Compile
-      - name: sign assembly
-        run: ./sign.ps1
       - name: 'Run tests'
         run: Invoke-Pester

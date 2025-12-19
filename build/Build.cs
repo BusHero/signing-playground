@@ -1,5 +1,7 @@
 using Nuke.Common;
 using Nuke.Common.Tools.DotNet;
+using Nuke.Common.Tools.PowerShell;
+using Nuke.Common.Tools.Pwsh;
 
 class Build : NukeBuild
 {
@@ -24,9 +26,18 @@ class Build : NukeBuild
 
     Target Compile => _ => _
         .DependsOn(Restore)
+        .Triggers(Sign)
         .Executes(() =>
         {
             DotNetTasks.DotNetBuild(x => x
                 .SetConfiguration(Configuration));
+        });
+
+    Target Sign => _ => _
+        .Executes(() =>
+        {
+            PwshTasks.Pwsh(_ => _
+                .EnableNoProfile()
+                .SetCommand("./sign.ps1"));
         });
 }
