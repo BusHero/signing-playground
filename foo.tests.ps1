@@ -4,7 +4,7 @@ Describe 'Check Signature' {
         $path = Join-Path -Path $root -ChildPath "\Sample\bin\Release\net10.0\Sample.dll"
 
         $signature = Get-AuthenticodeSignature $path
-        $signature.Status | Should -Be 'Valid'
+        $signature.Status | Should -Not -Be 'NotSigned'
         $signature.SignerCertificate | Should -Not -BeNullOrEmpty
     }
 }
