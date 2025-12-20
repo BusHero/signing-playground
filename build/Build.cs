@@ -49,8 +49,7 @@ class Build : NukeBuild
         .Executes(() =>
         {
             var dlls = Directory
-                .EnumerateFiles(RootDirectory / "Sample" / "bin" / Configuration / "net10.0")
-                .Where(x => x.EndsWith(".dll"))
+                .EnumerateFiles(RootDirectory / "Sample" / "bin" / Configuration / "net10.0", "*.dll")
                 .ToList();
 
             SignToolTasks.SignTool(_ => _
